@@ -1,0 +1,30 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: fleetrisk-frontend
+  namespace: argocd
+spec:
+  generators:
+  - git:
+      repoURL: https://github.com/maryeeem/fleetrisk-frontend.git
+      revision: main
+      directories:
+      - path: preprod
+  template:
+    metadata:
+      name: '{{path.basename}}-frontend'
+    spec:
+      project: default
+      source:
+        repoURL: https://github.com/maryeeem/fleetrisk-frontend.git
+        targetRevision: main
+        path: '{{path}}'
+      destination:
+        server: https://kubernetes.default.svc
+        namespace: preprod
+      syncPolicy:
+        automated:
+          prune: true
+          selfHeal: true
+        syncOptions:
+        - CreateNamespace=true
