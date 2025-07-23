@@ -21,6 +21,7 @@ spec:
         path: '{{path}}'
       destination:
         server: https://kubernetes.default.svc
+        namespace : fleetrisk-frontend
       syncPolicy:
         automated:  
           selfHeal: true
